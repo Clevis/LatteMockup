@@ -168,7 +168,8 @@ class MockedBlockMacros extends MacroSet
 			throw new CompileException("{{$node->name}} must be placed outside any macro.");
 		}
 		if ($this->extends !== NULL) {
-			throw new CompileException("Multiple {{$node->name}} declarations are not allowed.");
+//			throw new CompileException("Multiple {{$node->name}} declarations are not allowed.");
+			return;
 		}
 		if ($node->args === 'none') {
 			$this->extends = 'FALSE';
