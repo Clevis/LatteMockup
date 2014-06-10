@@ -18,6 +18,16 @@ if (!isset($_GET['template']))
 }
 else
 {
-	$renderer = new \Clevis\TemplatePreview\Renderer($_GET['template'], NULL, __DIR__ . '/temp');
+	$template = $_GET['template'];
+	$layout = NULL;
+	if (strpos(basename($template), '@') !== 0)
+	{
+		foreach (\Nette\Utils\Finder::findFiles('@layout.latte')->from($project) as $layout => $info)
+		{
+			// layout set
+			break;
+		}
+	}
+	$renderer = new \Clevis\TemplatePreview\Renderer($template, $layout, __DIR__ . '/temp');
 	echo $renderer->render();
 }
