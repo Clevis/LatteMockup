@@ -2,7 +2,6 @@
 
 namespace Clevis\TemplatePreview;
 
-
 use Latte\Engine;
 use Nette\Utils\DateTime;
 use Nette\Utils\Strings;

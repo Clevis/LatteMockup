@@ -20,7 +20,7 @@ class FakerMock extends InfiniteMock
 	 */
 	static $faker;
 
-	public function __construct($name = NULL)
+	public function __construct($name = [])
 	{
 		parent::__construct($name);
 		if (!static::$faker)
@@ -32,16 +32,19 @@ class FakerMock extends InfiniteMock
 
 	public function __toString()
 	{
-		$name = Strings::webalize($this->name);
 		$f = static::$faker;
-		try
+		foreach (array_reverse($this->names) as $name)
 		{
-			return $f->$name();
+			try
+			{
+				return $f->$name();
+			}
+			catch (InvalidArgumentException $e)
+			{
+				// provider not found
+			}
 		}
-		catch (InvalidArgumentException $e)
-		{
-			return $f->realText(100);
-		}
+		return $f->realText(100);
 	}
 
 }

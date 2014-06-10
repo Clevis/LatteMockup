@@ -15,22 +15,24 @@ class InfiniteMock implements \ArrayAccess, \Iterator, \Countable
 	public $id; // for testing
 	public $count = 5;
 
-	protected $name;
+	protected $names = [];
 
 	private $key = 0;
 	private $values = [];
 
-	public function __construct($name = NULL)
+	public function __construct($names = [])
 	{
 		$this->id = self::$objectId++;
-		$this->name = $name;
+		$this->names = is_array($names) ? $names : [$names];
 	}
 
 	protected function getRandom($key)
 	{
 		if (!isset($this->values[$key]))
 		{
-			$this->values[$key] = new static($key);
+			$names = $this->names;
+			$names[] = $key;
+			$this->values[$key] = new static($names);
 		}
 		return $this->values[$key];
 	}
