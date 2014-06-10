@@ -5,12 +5,12 @@
         "symfony/console": "~2.5.0",
         "nette/finder": "~2.2.0",
         "nette/utils": "~2.2.0",
-        "fzaninotto/faker": "~1.4.0"
+        "fzaninotto/faker": "~1.4.0",
+	    "petrp/access": "@dev"
     },
-    "require-dev": {
-        "nette/tester": "@dev",
-	    "tracy/tracy": "~2.2.0",
-        "petrp/access": "@dev"
+	"require-dev": {
+	    "nette/tester": "@dev",
+	    "tracy/tracy": "~2.2.0"
     },
     "license": "MIT",
     "authors": [
