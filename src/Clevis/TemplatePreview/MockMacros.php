@@ -14,6 +14,7 @@ use Latte\PhpWriter;
  * translator returns original value
  * href returns original value
  * control is ignored
+ * input is ignored
  */
 class MockMacros extends MacroSet
 {
@@ -31,6 +32,7 @@ class MockMacros extends MacroSet
 			return 'echo " href=\"#' . $node->args . '\"";';
 		});
 		$this->addMacro('ifset', '{', '}');
+		$this->addMacro('input', function() {});
 		$this->addMacro('_', [$this, 'macroTranslate'], [$this, 'macroTranslate']);
 	}
 
