@@ -2,7 +2,7 @@
     "name": "clevis/template-preview",
     "require": {
         "latte/latte": "~2.2.0",
-        "symfony/console": "~2.5.0",
+        "symfony/console": "~2.4",
         "nette/finder": "~2.2.0",
         "nette/utils": "~2.2.0",
         "fzaninotto/faker": "~1.4.0",
