@@ -40,7 +40,7 @@ class MockMacros extends MacroSet
 		$this->addMacro('link', function($node) {
 			return 'echo "#' . $node->args . '\"";';
 		});
-		$this->addMacro('ifset', '{', '}');
+		$this->addMacro('ifset', 'if (TRUE) {', '}');
 		$this->addMacro('input', function() {});
 		$this->addMacro('form', '{', '}');
 		$this->addMacro('label', '{', '}');
@@ -59,7 +59,7 @@ class MockMacros extends MacroSet
 		if (!$this->currentLink && $this->currentLink === $node->args)
 		{
 			$this->currentLink = $node->args;
-			return '{';
+			return 'if (TRUE) {';
 		}
 		else
 		{
