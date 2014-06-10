@@ -15,6 +15,7 @@ use Latte\PhpWriter;
  * href returns original value
  * control is ignored
  * input is ignored
+ * ifCurrent returns true for first link
  */
 class MockMacros extends MacroSet
 {
@@ -23,6 +24,8 @@ class MockMacros extends MacroSet
 	protected $layout;
 
 	protected $templateId = NULL;
+
+	protected $currentLink = NULL;
 
 	public function __construct(Latte\Compiler $compiler)
 	{
@@ -33,12 +36,26 @@ class MockMacros extends MacroSet
 		});
 		$this->addMacro('ifset', '{', '}');
 		$this->addMacro('input', function() {});
+		$this->addMacro('ifCurrent', [$this, 'macroIfCurrent'], '}');
 		$this->addMacro('_', [$this, 'macroTranslate'], [$this, 'macroTranslate']);
 	}
 
 	public function setLayout($layout)
 	{
 		$this->layout = $layout;
+	}
+
+	public function macroIfCurrent(MacroNode $node, PhpWriter $writer)
+	{
+		if (!$this->currentLink && $this->currentLink === $node->args)
+		{
+			$this->currentLink = $node->args;
+			return '{';
+		}
+		else
+		{
+			return 'if (FALSE) {';
+		}
 	}
 
 	/**
