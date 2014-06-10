@@ -1,11 +1,11 @@
 <?php
 
-$loader = require __DIR__ . '/vendor/autoload.php';
+$loader = require file_exists(__DIR__ . '/vendor')
+	? __DIR__ . '/vendor/autoload.php'
+	: __DIR__ . '/../../autoload.php';
 $loader->add('Clevis\\TemplatePreview', __DIR__ . '/src');
 
-\Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT);
-
-$project = __DIR__ . '/../../app';
+$project = __DIR__ . '/../../../app';
 
 
 if (!isset($_GET['template']))

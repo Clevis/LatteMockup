@@ -3,10 +3,10 @@
 use Symfony\Component\Console\Application;
 
 
-$loader = require __DIR__ . '/vendor/autoload.php';
+$loader = require file_exists(__DIR__ . '/vendor')
+	? __DIR__ . '/vendor/autoload.php'
+	: __DIR__ . '/../../autoload.php';
 $loader->add('Clevis\\TemplatePreview', __DIR__ . '/src');
-
-\Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT);
 
 $helpers = [
 	'tempDir' => new \Clevis\TemplatePreview\TempDirHelper(__DIR__.  '/temp'),
