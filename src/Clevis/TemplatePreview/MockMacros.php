@@ -12,7 +12,8 @@ use Latte\PhpWriter;
 /**
  * ifset always returns TRUE
  * translator returns original value
- * href returns original value
+ * href returns original value prepended with hash
+ * link returns original value prepended with hash
  * control is ignored
  * input is ignored
  * form is ignored
@@ -35,6 +36,9 @@ class MockMacros extends MacroSet
 		$this->addMacro('control', function() {});
 		$this->addMacro('href', NULL, NULL, function($node) {
 			return 'echo " href=\"#' . $node->args . '\"";';
+		});
+		$this->addMacro('link', function($node) {
+			return 'echo "#' . $node->args . '\"";';
 		});
 		$this->addMacro('ifset', '{', '}');
 		$this->addMacro('input', function() {});
