@@ -22,11 +22,16 @@ else
 	$layout = NULL;
 	if (strpos(basename($template), '@') !== 0)
 	{
-		foreach (\Nette\Utils\Finder::findFiles('@layout.latte')->from($project) as $layout => $info)
+		$in = dirname($template);
+		do
 		{
-			// layout set
-			break;
-		}
+			foreach (\Nette\Utils\Finder::findFiles('@layout.latte')->in($in) as $layout => $info)
+			{
+				// layout set
+				break 2;
+			}
+			$in = dirname($in);
+		} while ($in !== '/');
 	}
 	$renderer = new \Clevis\TemplatePreview\Renderer($template, $layout, __DIR__ . '/temp');
 	echo $renderer->render();
