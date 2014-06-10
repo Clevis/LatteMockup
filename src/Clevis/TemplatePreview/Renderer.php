@@ -20,6 +20,17 @@ class Renderer
 		$this->template = $template;
 		$this->layout = $layout;
 		$this->tempDir = $tempDir;
+
+		if (file_exists($this->getParamsCache()))
+		{
+			$raw = file_get_contents($this->getParamsCache());
+			$this->vars = json_decode($raw, TRUE);
+		}
+	}
+
+	private function getParamsCache()
+	{
+		return "$this->tempDir/params.ser";
 	}
 
 	public function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
@@ -28,6 +39,11 @@ class Renderer
 		{
 			$var = Strings::match($errstr, '~^Undefined variable: (.+)$~')[1];
 			$this->vars[] = $var;
+
+			@mkdir($this->tempDir);
+			$raw = json_encode($this->vars);
+			file_put_contents($this->getParamsCache(), $raw);
+
 			throw new IncompleteParametersException;
 		}
 		throw new \Exception($errstr, $errno);
@@ -70,9 +86,12 @@ class Renderer
 	{
 		$latte = new Engine();
 		$latte->setTempDirectory($this->tempDir);
+		$compiler = $latte->getCompiler();
 
-		$mockMacros = new MockMacros($latte->getCompiler());
+		MockedBlockMacros::install($compiler);
+		$mockMacros = new MockMacros($compiler);
 		$mockMacros->setLayout($this->layout);
+		dump($latte->getCompiler());
 
 		$latte->addFilter('date', function($obj, $format = '%x') {
 			$d = new DateTime($obj->date);

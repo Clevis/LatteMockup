@@ -2,8 +2,11 @@
 
 namespace Clevis\TemplatePreview;
 
+use Latte\CompileException;
+use Latte\MacroNode;
 use Latte\Macros\MacroSet;
 use Latte;
+use Latte\PhpWriter;
 
 
 class MockMacros extends MacroSet
@@ -14,6 +17,15 @@ class MockMacros extends MacroSet
 
 	protected $templateId = NULL;
 
+	public function __construct(Latte\Compiler $compiler)
+	{
+		parent::__construct($compiler);
+		$this->addMacro('control', function() {});
+		$this->addMacro('href', NULL, NULL, function($node) {
+			return 'echo " href=\"#' . $node->args . '\"";';
+		});
+	}
+
 	public function setLayout($layout)
 	{
 		$this->layout = $layout;
@@ -22,6 +34,7 @@ class MockMacros extends MacroSet
 	public function initialize()
 	{
 		$compiler = $this->getCompiler();
+
 		if ($this->layout)
 		{
 			// prevent layout from extending itself
@@ -31,15 +44,6 @@ class MockMacros extends MacroSet
 				$this->templateId = $compiler->getTemplateId();
 			}
 		}
-	}
-
-	public function __construct(Latte\Compiler $compiler)
-	{
-		parent::__construct($compiler);
-		$this->addMacro('control', function() {});
-		$this->addMacro('href', NULL, NULL, function($node) {
-			return 'echo " href=\"#' . $node->args . '\"";';
-		});
 	}
 
 }
