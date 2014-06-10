@@ -1,0 +1,4 @@
+
+
+done:
+	fakerObject: libovolne se da zanorovat a vsechny toString vraci neco dobreho, musi mit access na property i arrayaccess, musi byt iteratable
