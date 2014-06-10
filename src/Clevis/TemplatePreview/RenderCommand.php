@@ -34,9 +34,22 @@ class RenderCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$appDir = $this->getHelper('appDir')->get();
+		$template = $input->getArgument('template');
+		$layout = $input->getArgument('layout');
+
+		if (strpos($template, '/') !== 0)
+		{
+			$template = "$appDir/$template";
+		}
+		if ($layout && strpos($layout, '/') !== 0)
+		{
+			$layout = "$appDir/$layout";
+		}
+
 		$renderer = new Renderer(
-			$input->getArgument('template'),
-			$input->getArgument('layout'),
+			$template,
+			$layout,
 			$this->getHelper('tempDir')->get()
 		);
 		$output->writeln($renderer->render());

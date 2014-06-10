@@ -8,7 +8,7 @@ use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 
 
-class TempDirHelper implements HelperInterface
+class DirHelper implements HelperInterface
 {
 
 	private $dir;
@@ -26,11 +26,11 @@ class TempDirHelper implements HelperInterface
 	}
 
 	/**
-	 * @param string $tempDir path
+	 * @param string $dir path
 	 */
-	public function __construct($tempDir)
+	public function __construct($dir)
 	{
-		$this->dir = $tempDir;
+		$this->dir = $dir;
 	}
 
 	public function __toString()

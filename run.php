@@ -9,7 +9,8 @@ $loader = require file_exists(__DIR__ . '/vendor')
 $loader->add('Clevis\\TemplatePreview', __DIR__ . '/src');
 
 $helpers = [
-	'tempDir' => new \Clevis\TemplatePreview\TempDirHelper(__DIR__.  '/temp'),
+	'appDir' => new \Clevis\TemplatePreview\DirHelper(__DIR__.  '/../../..'),
+	'tempDir' => new \Clevis\TemplatePreview\DirHelper(__DIR__.  '/temp'),
 ];
 
 $set = new \Symfony\Component\Console\Helper\HelperSet($helpers);
