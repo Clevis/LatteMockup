@@ -10,10 +10,10 @@ $project = __DIR__ . '/../../../app';
 
 if (!isset($_GET['template']))
 {
-
 	foreach (\Nette\Utils\Finder::findFiles('*.latte')->from($project) as $file)
 	{
-		echo '<a href="?template=' . urlencode($file) . '">' . $file . '</a><br>';
+		$short = substr($file, strlen($project));
+		echo '<a href="?template=' . urlencode($file) . '">' . $short . '</a><br>';
 	}
 }
 else
