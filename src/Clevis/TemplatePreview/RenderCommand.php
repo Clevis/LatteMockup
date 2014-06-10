@@ -11,10 +11,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class FooCommand extends Command
+class RenderCommand extends Command
 {
 
-	private $output;
 	private $vars = ['basePath', 'user'];
 
 	protected function configure()
@@ -41,8 +40,9 @@ class FooCommand extends Command
 		{
 			$var = Strings::match($errstr, '~^Undefined variable: (.+)$~')[1];
 			$this->vars[] = $var;
+			throw new IncompleteParametersException;
 		}
-		throw new IncompleteParametersException;
+		throw new \Exception($errstr, $errno);
 	}
 
 	private function buildParams()
@@ -77,13 +77,14 @@ class FooCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$this->output = $output;
-//		$input->getArgument('layout');
-
 		$latte = new Engine();
-		new MockMacros($latte->getCompiler());
-		$latte->addFilter('date', function($date, $format = '%x') {
-			$d = new DateTime();
+		$latte->setTempDirectory($this->getHelper('tempDir')->get());
+
+		$mockMacros = new MockMacros($latte->getCompiler());
+		$mockMacros->setLayout($input->getArgument('layout'));
+
+		$latte->addFilter('date', function($obj, $format = '%x') {
+			$d = new DateTime($obj->date);
 			return strftime($format, $d->format('U'));
 		});
 
