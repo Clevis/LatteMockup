@@ -91,7 +91,6 @@ class Renderer
 		MockedBlockMacros::install($compiler);
 		$mockMacros = new MockMacros($compiler);
 		$mockMacros->setLayout($this->layout);
-		dump($latte->getCompiler());
 
 		$latte->addFilter('date', function($obj, $format = '%x') {
 			$d = new DateTime($obj->date);

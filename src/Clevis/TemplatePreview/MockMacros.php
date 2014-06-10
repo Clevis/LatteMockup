@@ -24,6 +24,7 @@ class MockMacros extends MacroSet
 		$this->addMacro('href', NULL, NULL, function($node) {
 			return 'echo " href=\"#' . $node->args . '\"";';
 		});
+		$this->addMacro('ifset', '{', '}');
 	}
 
 	public function setLayout($layout)
