@@ -5,7 +5,7 @@ $loader->add('Clevis\\TemplatePreview', __DIR__ . '/src');
 
 \Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT);
 
-$project = '/Users/mikulas/Dropbox/Projects2/khanovaskola/app';
+$project = __DIR__ . '/../../app';
 
 
 if (!isset($_GET['template']))
