@@ -15,6 +15,8 @@ use Latte\PhpWriter;
  * href returns original value
  * control is ignored
  * input is ignored
+ * form is ignored
+ * label is ignored
  * ifCurrent returns true for first link
  */
 class MockMacros extends MacroSet
@@ -36,6 +38,9 @@ class MockMacros extends MacroSet
 		});
 		$this->addMacro('ifset', '{', '}');
 		$this->addMacro('input', function() {});
+		$this->addMacro('form', '{', '}');
+		$this->addMacro('label', '{', '}');
+
 		$this->addMacro('ifCurrent', [$this, 'macroIfCurrent'], '}');
 		$this->addMacro('_', [$this, 'macroTranslate'], [$this, 'macroTranslate']);
 	}
