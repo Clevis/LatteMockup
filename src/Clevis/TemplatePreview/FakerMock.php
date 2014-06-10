@@ -3,6 +3,7 @@
 namespace Clevis\TemplatePreview;
 
 use Faker\Factory;
+use Faker\Provider\File;
 use InvalidArgumentException;
 use Nette\Utils\Strings;
 
@@ -37,7 +38,7 @@ class FakerMock extends InfiniteMock
 		{
 			try
 			{
-				return $f->$name();
+				return $f->{(string)$name}();
 			}
 			catch (InvalidArgumentException $e)
 			{

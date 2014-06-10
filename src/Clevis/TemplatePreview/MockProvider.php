@@ -8,11 +8,19 @@ use Faker\Provider\Base;
 class MockProvider extends Base
 {
 
-	// TODO: create aliases as array
-
 	public function title()
 	{
 		return $this->generator->realText(100);
+	}
+
+	public function imagePath()
+	{
+		return $this->generator->image();
+	}
+
+	public function basePath()
+	{
+		return '';
 	}
 
 }
