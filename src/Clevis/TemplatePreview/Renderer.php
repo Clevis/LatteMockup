@@ -97,6 +97,10 @@ class Renderer
 			return strftime($format, $d->format('U'));
 		});
 
+		$latte->addFilter('translation', function() {
+			dump(func_get_args());
+		});
+
 		$html = NULL;
 		do
 		{

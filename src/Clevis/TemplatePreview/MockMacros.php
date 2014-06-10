@@ -9,6 +9,12 @@ use Latte;
 use Latte\PhpWriter;
 
 
+/**
+ * ifset always returns TRUE
+ * translator returns original value
+ * href returns original value
+ * control is ignored
+ */
 class MockMacros extends MacroSet
 {
 
@@ -25,11 +31,28 @@ class MockMacros extends MacroSet
 			return 'echo " href=\"#' . $node->args . '\"";';
 		});
 		$this->addMacro('ifset', '{', '}');
+		$this->addMacro('_', [$this, 'macroTranslate'], [$this, 'macroTranslate']);
 	}
 
 	public function setLayout($layout)
 	{
 		$this->layout = $layout;
+	}
+
+	/**
+	 * {_$var |modifiers}
+	 */
+	public function macroTranslate(MacroNode $node, PhpWriter $writer)
+	{
+		if ($node->closing) {
+			return $writer->write('echo %modify(ob_get_clean())');
+
+		} elseif ($node->isEmpty = ($node->args !== '')) {
+			return $writer->write('echo %modify(%node.args)');
+
+		} else {
+			return 'ob_start()';
+		}
 	}
 
 	public function initialize()
