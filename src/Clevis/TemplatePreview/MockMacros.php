@@ -20,6 +20,7 @@ use Latte\PhpWriter;
  * form is ignored
  * label is ignored
  * ifCurrent returns true for first link
+ * name returns original value
  */
 class MockMacros extends MacroSet
 {
@@ -48,6 +49,9 @@ class MockMacros extends MacroSet
 		$this->addMacro('input', function() {});
 		$this->addMacro('form', '{', '}');
 		$this->addMacro('label', '{', '}');
+		$this->addMacro('name', NULL, NULL, function($node) {
+			return 'echo "' . $node->args . '";';
+		});
 
 		$this->addMacro('ifCurrent', [$this, 'macroIfCurrent'], '}');
 		$this->addMacro('_', [$this, 'macroTranslate'], [$this, 'macroTranslate']);
