@@ -14,6 +14,7 @@ use Latte\PhpWriter;
  * translator returns original value
  * href returns original value prepended with hash
  * link returns original value prepended with hash
+ * plink returns original value prepended with hash
  * control is ignored
  * input is ignored
  * form is ignored
@@ -38,6 +39,9 @@ class MockMacros extends MacroSet
 			return 'echo " href=\"#' . $node->args . '\"";';
 		});
 		$this->addMacro('link', function($node) {
+			return 'echo "#' . $node->args . '\"";';
+		});
+		$this->addMacro('plink', function($node) {
 			return 'echo "#' . $node->args . '\"";';
 		});
 		$this->addMacro('ifset', 'if (TRUE) {', '}');
