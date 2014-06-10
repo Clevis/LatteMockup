@@ -118,7 +118,7 @@ class MockedBlockMacros extends MacroSet
 	{
 		$destination = $node->tokenizer->fetchWord(); // destination [,] [params]
 		if (!preg_match('~#|[\w-]+\z~A', $destination)) {
-			return FALSE;
+//			 return FALSE;
 		}
 
 		$destination = ltrim($destination, '#');
