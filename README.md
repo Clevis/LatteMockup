@@ -23,7 +23,9 @@ se automaticky najdou i layouts (bere se první `@layout` ve složce šablony, p
 
 Šablony lze buď generovat v konzolovém nástroji `./vendor/bin/render`. Druhá možnost je klikací webové prostředí, které
 se defaultně nechází v './vendor/clevis/template-preview/index.php`. Doporučuji si udělat symlink pod www, aby byl soubor
-na localhostu dobře přístupný.
+na localhostu dobře přístupný. To vám také umožní načítat závislosti jako jsou css a js soubory. Pokud používáte na
+localhostu Apache, symlink musí být absolutní a možná budete potřebovat do `.htaccess` ve `www` přidat `Options +FollowSymLinks`.
+V Nginx vám to poběží v pohodě rovnou.
 
 ## Rozšíření
 
