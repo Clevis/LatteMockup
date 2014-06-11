@@ -7,16 +7,19 @@ Renderování libovolné latte šablony.
 
 Instalace přes `composer.json`
 
-```json
+```
 "clevis/template-preview": "@dev"
 ```
 
-```json
+```
 repositories: [{
 	"type": "vcs",
 	"url": "https://github.com/Clevis/LatteMockup",
 }]
 ```
+
+Není potřeba cokoliv nastavovat. Tento nástroj si sám najde všechny proměnné, které šablona používá. Při použití webového prostředí
+se automaticky najdou i layouts (bere se první `@layout` ve složce šablony, případně nadsložce atd.).
 
 Šablony lze buď generovat v konzolovém nástroji `./vendor/bin/render`. Druhá možnost je klikací webové prostředí, které
 se defaultně nechází v './vendor/clevis/template-preview/index.php`. Doporučuji si udělat symlink pod www, aby byl soubor
