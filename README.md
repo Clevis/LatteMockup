@@ -22,6 +22,19 @@ repositories: [{
 se defaultně nechází v './vendor/clevis/template-preview/index.php`. Doporučuji si udělat symlink pod www, aby byl soubor
 na localhostu dobře přístupný.
 
+## Rozšíření
+
+Podle názvu proměnné, resp. parametru, se volá faker s českými providery (https://github.com/fzaninotto/Faker).
+Hledá se od posledního názvu: pro {$a->b['c']} se zkusí najít provider s názvem `c`, potom `b` a případně `a`.
+Pokud se žádný vhodný generátor nenajde (jako by se našel např. pro `{$user->firstName}`), zobrazí se náhodný text.
+
+Pokud chcete rozšířit jaké názvy faker rozpozná, editujte `Clevis\TemplatePreview\MockProvider`.
+
+## Limitace
+
+Protože je vykreslování úplně nezávislé na aplikaci, nevykreslují se formuláře, obecně žádné komponenty. Pokud definuje aplikace
+vlastní filtery (helpery) nebo makra, není jak je rozpoznat.
+
 ## Motivace
 
 Zobrazení a otestování nette šablon bez nutnosti mít spuštěnou aplikaci.
