@@ -1,11 +1,18 @@
 <?php
 
+/** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require file_exists(__DIR__ . '/vendor')
 	? __DIR__ . '/vendor/autoload.php'
 	: __DIR__ . '/../../autoload.php';
 $loader->add('Clevis\\TemplatePreview', __DIR__ . '/src');
 
 $project = __DIR__ . '/../../../app';
+
+$appLoader = new \Nette\Loaders\RobotLoader();
+$storage = new \Nette\Caching\Storages\FileStorage(__DIR__.  '/temp');
+$appLoader->setCacheStorage($storage);
+$appLoader->addDirectory($project);
+$appLoader->register();
 
 
 if (!isset($_GET['template']))

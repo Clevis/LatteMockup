@@ -6,7 +6,8 @@
         "nette/finder": "~2.2.0",
         "nette/utils": "~2.2.0",
         "fzaninotto/faker": "~1.4.0",
-	    "petrp/access": "@dev"
+	    "petrp/access": "@dev",
+	    "nette/robot-loader": "~2.2.0"
     },
 	"require-dev": {
 	    "nette/tester": "@dev",
