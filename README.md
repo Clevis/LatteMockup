@@ -1,9 +1,30 @@
 LatteMockup
 ===========
 
-Zobrazení a otestování nette šablon bez nutnosti mít spuštěnou aplikaci.
+Renderování libovolné latte šablony.
+
+## Použití
+
+Instalace přes `composer.json`
+
+```json
+"clevis/template-preview": "@dev"
+```
+
+```json
+repositories: [{
+	"type": "vcs",
+	"url": "https://github.com/Clevis/LatteMockup",
+}]
+```
+
+Šablony lze buď generovat v konzolovém nástroji `./vendor/bin/render`. Druhá možnost je klikací webové prostředí, které
+se defaultně nechází v './vendor/clevis/template-preview/index.php`. Doporučuji si udělat symlink pod www, aby byl soubor
+na localhostu dobře přístupný.
 
 ## Motivace
+
+Zobrazení a otestování nette šablon bez nutnosti mít spuštěnou aplikaci.
 
 Pro každou šablonu a její stav budeme mít něco jako mockup, který nebude závislý na stavu aplikace a zobrazené údaje bude mít připravené staticky dopředu. Tedy statické vykreslení.
 
@@ -20,7 +41,7 @@ Odhaduji, že to dokáže ušetřit jednotky až desítky procent času stráven
 
 Stránka s automaticky generovaným seznamem šablon v aplikaci.
 
-U šablon s konfiguračním souborem zobrazit také její stavy. 
+U šablon s konfiguračním souborem zobrazit také její stavy.
 
 Každá položka vede A) na samotnou šablonu (když nemá mockup) nebo B) na zobrazení stavu šablony
 

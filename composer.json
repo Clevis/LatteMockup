@@ -13,7 +13,10 @@
 	    "tracy/tracy": "~2.2.0"
     },
     "license": "MIT",
-    "authors": [
+	"bin": [
+		"bin/render"
+	],
+	"authors": [
         {
             "name": "Mikulas Dite",
             "email": "mikulas@dite.pro"
