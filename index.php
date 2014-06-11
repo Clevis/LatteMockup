@@ -25,7 +25,7 @@ else
 		$in = dirname($template);
 		do
 		{
-			foreach (\Nette\Utils\Finder::findFiles('@layout.latte')->in($in) as $layout => $info)
+			foreach (\Nette\Utils\Finder::findFiles('@layout.latte')->from($in) as $layout => $info)
 			{
 				// layout set
 				break 2;
