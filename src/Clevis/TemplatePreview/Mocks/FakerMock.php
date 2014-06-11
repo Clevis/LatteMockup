@@ -33,7 +33,10 @@ class FakerMock extends InfiniteMock
 	public function __toString()
 	{
 		$f = static::$faker;
-		$names = array_filter($this->names);
+		$names = array_filter($this->names, function($name) {
+			// ignore indexes from Iterator
+			return $name && !is_int($name);
+		});
 
 		// for: foo->flash->type
 		// try: fooFlashType, flashType, type
