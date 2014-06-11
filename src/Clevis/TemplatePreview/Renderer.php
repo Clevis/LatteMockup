@@ -73,6 +73,7 @@ class Renderer
 		{
 			$params[$var] = new FakerMock($var);
 		}
+		$params['template'] = (object) [];
 		return $params;
 	}
 
@@ -124,6 +125,10 @@ class Renderer
 	public function render()
 	{
 		$latte = new Engine();
+
+		$hack = Access($latte, '$baseTemplateClass');
+		$hack->set('Clevis\\TemplatePreview\\Mocks\\Template');
+
 		$latte->setTempDirectory($this->tempDir);
 		$compiler = $latte->getCompiler();
 

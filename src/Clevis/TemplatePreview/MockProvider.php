@@ -42,4 +42,14 @@ class MockProvider extends Provider\Base
 		return $this->generator->dateTime()->format($format);
 	}
 
+	public function receivedAmount()
+	{
+		return $this->numberBetween(1, 20) * 10;
+	}
+
+	public function expectedAmount()
+	{
+		return $this->numberBetween(1, 20) * 10;
+	}
+
 }

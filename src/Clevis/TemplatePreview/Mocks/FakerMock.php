@@ -61,7 +61,7 @@ class FakerMock extends InfiniteMock
 						$method = '_format';
 					}
 
-					return $f->$method();
+					return (string) $f->$method();
 				}
 				catch (InvalidArgumentException $e)
 				{
