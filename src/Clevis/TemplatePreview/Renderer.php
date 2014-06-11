@@ -94,7 +94,7 @@ class Renderer
 		}
 		catch (RuntimeException $e)
 		{
-			$m = Strings::match($e->getMessage(), '~Cannot include undefined block \'([^\']+)\'~');
+			$m = Strings::match($e->getMessage(), '~Cannot include undefined (parent )?block \'([^\']+)\'~');
 			if (!$m)
 			{
 				throw $e;
