@@ -19,11 +19,18 @@ $appLoader->register();
 
 if (!isset($_GET['template']))
 {
+	$templates = [];
 	foreach (\Nette\Utils\Finder::findFiles('*.latte')->from($project) as $file)
 	{
 		$short = substr($file, strlen($project));
-		echo '<a href="?template=' . urlencode($file) . '">' . $short . '</a><br>';
+		$short = ltrim($short, '/');
+		$package = explode('/', $short)[0];
+		$templates[$package][realpath($file)] = $short;
 	}
+	$latte = new \Latte\Engine();
+	$latte->render(__DIR__ . '/src/templates/list.latte', [
+		'templates' => $templates,
+	]);
 }
 else
 {
