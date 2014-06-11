@@ -2,10 +2,10 @@
 
 namespace Clevis\TemplatePreview;
 
-use Clevis\TemplatePreview\Mocks\BlockMacros;
 use Clevis\TemplatePreview\Mocks\FakerMock;
 use Clevis\TemplatePreview\Mocks\Macros;
 use Latte\Engine;
+use Latte\RuntimeException;
 use Nette\Utils\DateTime;
 use Nette\Utils\Strings;
 
@@ -13,10 +13,20 @@ use Nette\Utils\Strings;
 class Renderer
 {
 
+	/** @var string path */
 	private $template;
+
+	/** @var string path */
 	private $layout;
+
+	/** @var string path */
 	private $tempDir;
+
+	/** @var string[] */
 	private $vars = ['basePath', 'user'];
+
+	/** @var Macros */
+	private $macros;
 
 	public function __construct($template, $layout, $tempDir)
 	{
@@ -38,11 +48,10 @@ class Renderer
 
 	public function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
 	{
-		if ($errno === 8)
+		$var = Strings::match($errstr, '~^Undefined variable: (.+)$~')[1];
+		if ($var)
 		{
-			$var = Strings::match($errstr, '~^Undefined variable: (.+)$~')[1];
 			$this->vars[] = $var;
-
 			@mkdir($this->tempDir);
 			$raw = json_encode($this->vars);
 			file_put_contents($this->getParamsCache(), $raw);
@@ -65,11 +74,14 @@ class Renderer
 	/**
 	 * @param Engine $latte
 	 * @param string $template path
+	 * @throws \Exception
+	 * @throws \Latte\RuntimeException
 	 * @return NULL|string html
 	 */
 	private function renderTrial($latte, $template)
 	{
 		set_error_handler([$this, 'handleError']);
+
 		try {
 			$html = $latte->renderToString($template, $this->buildParams());
 			restore_error_handler();
@@ -77,6 +89,17 @@ class Renderer
 		}
 		catch (IncompleteParametersException $e)
 		{
+			restore_error_handler();
+			return NULL;
+		}
+		catch (RuntimeException $e)
+		{
+			$m = Strings::match($e->getMessage(), '~Cannot include undefined block \'([^\']+)\'~');
+			if (!$m)
+			{
+				throw $e;
+			}
+			$this->macros->addBlock($m[1]);
 			restore_error_handler();
 			return NULL;
 		}
@@ -93,8 +116,7 @@ class Renderer
 
 		$latte->getParser()->shortNoEscape = TRUE;
 
-		BlockMacros::install($compiler);
-		Macros::install($compiler, $this->layout);
+		$this->macros = Macros::install($compiler, $this->layout);
 
 		$latte->addFilter('date', function($obj, $format = '%x') {
 			$d = new DateTime($obj->date);
@@ -105,6 +127,8 @@ class Renderer
 		do
 		{
 			$html = $this->renderTrial($latte, $this->template);
+			// remove cached file so missing blocks can be added
+			unlink($latte->getCacheFile($this->template));
 		} while (!$html);
 
 		return $html;

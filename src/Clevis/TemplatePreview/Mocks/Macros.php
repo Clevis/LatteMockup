@@ -28,13 +28,19 @@ class Macros extends MacroSet
 	/** @var string */
 	protected $layout;
 
+	/** @var string */
 	protected $templateId = NULL;
 
+	/** @var string */
 	protected $currentLink = NULL;
+
+	/** @var array */
+	protected $blocks = [];
 
 	/**
 	 * @param Compiler $compiler
 	 * @param string $layout path
+	 * @return \Clevis\TemplatePreview\Mocks\Macros
 	 */
 	public static function install(Compiler $compiler, $layout)
 	{
@@ -62,6 +68,13 @@ class Macros extends MacroSet
 
 		$me->addMacro('ifCurrent', [$me, 'macroIfCurrent'], '}');
 		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
+
+		return $me;
+	}
+
+	public function setBlocks(array $blocks)
+	{
+		$this->blocks = $blocks;
 	}
 
 	public function setLayout($layout)
@@ -98,9 +111,28 @@ class Macros extends MacroSet
 		}
 	}
 
+	public function addBlock($block)
+	{
+		if (!isset($this->blocks[$block]))
+		{
+			$this->blocks[$block] = FALSE;
+		}
+	}
+
 	public function initialize()
 	{
 		$compiler = $this->getCompiler();
+
+		foreach ($this->blocks as $block => &$added)
+		{
+			if ($added)
+			{
+				continue;
+			}
+			$compiler->openMacro('define', $block);
+			$compiler->closeMacro('define');
+			$added = TRUE;
+		}
 
 		if ($this->layout)
 		{
