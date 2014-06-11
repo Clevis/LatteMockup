@@ -6,6 +6,8 @@ $loader = require file_exists(__DIR__ . '/vendor')
 	: __DIR__ . '/../../autoload.php';
 $loader->add('Clevis\\TemplatePreview', __DIR__ . '/src');
 
+\Tracy\Debugger::enable(\Tracy\Debugger::DEBUG);
+
 $project = __DIR__ . '/../../../app';
 
 $appLoader = new \Nette\Loaders\RobotLoader();
