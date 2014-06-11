@@ -2,10 +2,14 @@
 
 namespace Clevis\TemplatePreview;
 
-use Faker\Provider\Base;
+use Faker\Generator;
+use Faker\Provider;
 
 
-class MockProvider extends Base
+/**
+ * @property-read Generator|Provider\Image $generator
+ */
+class MockProvider extends Provider\Base
 {
 
 	public function title()

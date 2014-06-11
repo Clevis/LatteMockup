@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Clevis\TemplatePreview\Console;
 use Symfony\Component\Console\Application;
 
 
@@ -10,13 +11,13 @@ $loader = require file_exists(__DIR__ . '/../vendor')
 $loader->add('Clevis\\TemplatePreview', __DIR__ . '/../src');
 
 $helpers = [
-	'appDir' => new \Clevis\TemplatePreview\DirHelper(__DIR__.  '/../../../..'),
-	'tempDir' => new \Clevis\TemplatePreview\DirHelper(__DIR__.  '/../temp'),
+	'appDir' => new Console\DirHelper(__DIR__.  '/../../../..'),
+	'tempDir' => new Console\DirHelper(__DIR__.  '/../temp'),
 ];
 
 $set = new \Symfony\Component\Console\Helper\HelperSet($helpers);
 
 $application = new Application();
 $application->setHelperSet($set);
-$application->add(new \Clevis\TemplatePreview\RenderCommand());
+$application->add(new Console\RenderCommand());
 $application->run();

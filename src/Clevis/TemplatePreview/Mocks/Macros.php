@@ -1,8 +1,8 @@
 <?php
 
-namespace Clevis\TemplatePreview;
+namespace Clevis\TemplatePreview\Mocks;
 
-use Latte\CompileException;
+use Latte\Compiler;
 use Latte\MacroNode;
 use Latte\Macros\MacroSet;
 use Latte;
@@ -22,7 +22,7 @@ use Latte\PhpWriter;
  * ifCurrent returns true for first link
  * name returns original value
  */
-class MockMacros extends MacroSet
+class Macros extends MacroSet
 {
 
 	/** @var string */
@@ -32,29 +32,36 @@ class MockMacros extends MacroSet
 
 	protected $currentLink = NULL;
 
-	public function __construct(Latte\Compiler $compiler)
+	/**
+	 * @param Compiler $compiler
+	 * @param string $layout path
+	 */
+	public static function install(Compiler $compiler, $layout)
 	{
-		parent::__construct($compiler);
-		$this->addMacro('control', function() {});
-		$this->addMacro('href', NULL, NULL, function($node) {
+		/** @var self $me */
+		$me = new static($compiler);
+		$me->setLayout($layout);
+
+		$me->addMacro('control', function() {});
+		$me->addMacro('href', NULL, NULL, function($node) {
 			return 'echo " href=\"#' . $node->args . '\"";';
 		});
-		$this->addMacro('link', function($node) {
+		$me->addMacro('link', function($node) {
 			return 'echo "#' . $node->args . '\"";';
 		});
-		$this->addMacro('plink', function($node) {
+		$me->addMacro('plink', function($node) {
 			return 'echo "#' . $node->args . '\"";';
 		});
-		$this->addMacro('ifset', 'if (TRUE) {', '}');
-		$this->addMacro('input', function() {});
-		$this->addMacro('form', '{', '}');
-		$this->addMacro('label', '{', '}');
-		$this->addMacro('name', NULL, NULL, function($node) {
+		$me->addMacro('ifset', 'if (TRUE) {', '}');
+		$me->addMacro('input', function() {});
+		$me->addMacro('form', '{', '}');
+		$me->addMacro('label', '{', '}');
+		$me->addMacro('name', NULL, NULL, function($node) {
 			return 'echo "' . $node->args . '";';
 		});
 
-		$this->addMacro('ifCurrent', [$this, 'macroIfCurrent'], '}');
-		$this->addMacro('_', [$this, 'macroTranslate'], [$this, 'macroTranslate']);
+		$me->addMacro('ifCurrent', [$me, 'macroIfCurrent'], '}');
+		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
 	}
 
 	public function setLayout($layout)

@@ -1,11 +1,10 @@
 <?php
 
-namespace Clevis\TemplatePreview;
+namespace Clevis\TemplatePreview\Mocks;
 
+use Clevis\TemplatePreview\MockProvider;
 use Faker\Factory;
-use Faker\Provider\File;
 use InvalidArgumentException;
-use Nette\Utils\Strings;
 
 
 /**

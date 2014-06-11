@@ -1,6 +1,6 @@
 <?php
 
-namespace Clevis\TemplatePreview;
+namespace Clevis\TemplatePreview\Mocks;
 
 
 /**

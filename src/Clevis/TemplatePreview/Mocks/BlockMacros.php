@@ -1,6 +1,6 @@
 <?php
 
-namespace Clevis\TemplatePreview;
+namespace Clevis\TemplatePreview\Mocks;
 
 use Latte;
 use Latte\MacroNode;
@@ -21,7 +21,7 @@ use Latte\Macros\MacroSet;
  *
  * @author     David Grudl
  */
-class MockedBlockMacros extends MacroSet
+class BlockMacros extends MacroSet
 {
 	/** @var array */
 	private $namedBlocks = array();
@@ -135,7 +135,7 @@ class MockedBlockMacros extends MacroSet
 		if (isset($this->namedBlocks[$destination]) && !$parent) {
 			$cmd = "call_user_func(reset(\$_l->blocks[$name]), \$_l, %node.array? + get_defined_vars())";
 		} else {
-			$cmd = 'Clevis\TemplatePreview\MockedBlockMacros::callBlock' . ($parent ? 'Parent' : '') . "(\$_l, $name, %node.array? + " . ($parent ? 'get_defined_vars' : '$template->getParameters') . '())';
+			$cmd = 'Clevis\TemplatePreview\Mocks\BlockMacros::callBlock' . ($parent ? 'Parent' : '') . "(\$_l, $name, %node.array? + " . ($parent ? 'get_defined_vars' : '$template->getParameters') . '())';
 		}
 
 		if ($node->modifiers) {

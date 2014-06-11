@@ -2,6 +2,9 @@
 
 namespace Clevis\TemplatePreview;
 
+use Clevis\TemplatePreview\Mocks\BlockMacros;
+use Clevis\TemplatePreview\Mocks\FakerMock;
+use Clevis\TemplatePreview\Mocks\Macros;
 use Latte\Engine;
 use Nette\Utils\DateTime;
 use Nette\Utils\Strings;
@@ -88,17 +91,12 @@ class Renderer
 		$latte->setTempDirectory($this->tempDir);
 		$compiler = $latte->getCompiler();
 
-		MockedBlockMacros::install($compiler);
-		$mockMacros = new MockMacros($compiler);
-		$mockMacros->setLayout($this->layout);
+		BlockMacros::install($compiler);
+		Macros::install($compiler, $this->layout);
 
 		$latte->addFilter('date', function($obj, $format = '%x') {
 			$d = new DateTime($obj->date);
 			return strftime($format, $d->format('U'));
-		});
-
-		$latte->addFilter('translation', function() {
-			dump(func_get_args());
 		});
 
 		$html = NULL;

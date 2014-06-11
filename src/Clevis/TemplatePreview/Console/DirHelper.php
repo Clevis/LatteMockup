@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Clevis\TemplatePreview;
+namespace Clevis\TemplatePreview\Console;
 
 
 use Symfony\Component\Console\Helper\HelperInterface;

@@ -1,10 +1,8 @@
 <?php
 
-namespace Clevis\TemplatePreview;
+namespace Clevis\TemplatePreview\Console;
 
-use Latte\Engine;
-use Nette\Utils\DateTime;
-use Nette\Utils\Strings;
+use Clevis\TemplatePreview\Renderer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
