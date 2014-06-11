@@ -27,4 +27,9 @@ class MockProvider extends Provider\Base
 		return '';
 	}
 
+	public function flashType()
+	{
+		return 'flash-alert';
+	}
+
 }

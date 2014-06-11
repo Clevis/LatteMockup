@@ -33,17 +33,34 @@ class FakerMock extends InfiniteMock
 	public function __toString()
 	{
 		$f = static::$faker;
-		foreach (array_reverse($this->names) as $name)
+		$names = array_filter($this->names);
+
+		// for: foo->flash->type
+		// try: fooFlashType, flashType, type
+		// try: fooFlash, flash
+		// try: foo
+		do
 		{
-			try
+			$stack = $names;
+			foreach ($stack as &$name)
 			{
-				return $f->{(string)$name}();
+				$name = ucFirst($name);
 			}
-			catch (InvalidArgumentException $e)
+			do
 			{
-				// provider not found
-			}
-		}
+				try
+				{
+					$method = lcFirst(implode('', $stack));
+					return $f->$method();
+				}
+				catch (InvalidArgumentException $e)
+				{
+					// provider not found
+				}
+			} while (array_shift($stack) && $stack);
+
+		} while (array_pop($names) && $names);
+
 		return $f->realText(100);
 	}
 
