@@ -91,6 +91,8 @@ class Renderer
 		$latte->setTempDirectory($this->tempDir);
 		$compiler = $latte->getCompiler();
 
+		$latte->getParser()->shortNoEscape = TRUE;
+
 		BlockMacros::install($compiler);
 		Macros::install($compiler, $this->layout);
 
