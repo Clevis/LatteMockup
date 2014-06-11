@@ -4,6 +4,7 @@ namespace Clevis\TemplatePreview;
 
 use Clevis\TemplatePreview\Mocks\FakerMock;
 use Clevis\TemplatePreview\Mocks\Macros;
+use Latte\CompileException;
 use Latte\Engine;
 use Latte\RuntimeException;
 use Nette\Utils\DateTime;
@@ -48,8 +49,7 @@ class Renderer
 
 	public function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
 	{
-		$var = Strings::match($errstr, '~^Undefined variable: (.+)$~')[1];
-		if ($var)
+		if ($var = Strings::match($errstr, '~^Undefined variable: (.+)$~')[1])
 		{
 			$this->vars[] = $var;
 			@mkdir($this->tempDir);
@@ -57,6 +57,11 @@ class Renderer
 			file_put_contents($this->getParamsCache(), $raw);
 
 			throw new IncompleteParametersException;
+		}
+		else if (Strings::match($errstr, '~could not be converted to int~'))
+		{
+			throw new \Exception("$errstr. This cannot be solved automatically: if you really need int in template, "
+			. "implement custom data provider in 'Clevis\\TemplatePreview\\MockProvider'.");
 		}
 		throw new \Exception($errstr, $errno);
 	}
@@ -92,6 +97,14 @@ class Renderer
 			restore_error_handler();
 			return NULL;
 		}
+		catch (CompileException $e)
+		{
+			if (strpos($e->getMessage(), 'Multiple {extends} declarations are not allowed') === 0)
+			{
+				$this->macros->setLayout(NULL);
+			}
+			return NULL;
+		}
 		catch (RuntimeException $e)
 		{
 			$m = Strings::match($e->getMessage(), '~Cannot include undefined (parent )?block \'([^\']+)\'~');
@@ -116,7 +129,8 @@ class Renderer
 
 		$latte->getParser()->shortNoEscape = TRUE;
 
-		$this->macros = Macros::install($compiler, $this->layout);
+		$this->macros = Macros::install($compiler);
+		$this->macros->setLayout($this->layout);
 
 		$latte->addFilter('date', function($obj, $format = '%x') {
 			$d = new DateTime($obj->date);
@@ -128,7 +142,11 @@ class Renderer
 		{
 			$html = $this->renderTrial($latte, $this->template);
 			// remove cached file so missing blocks can be added
-			unlink($latte->getCacheFile($this->template));
+			$cached = $latte->getCacheFile($this->template);
+			if (file_exists($cached))
+			{
+				unlink($cached);
+			}
 		} while (!$html);
 
 		return $html;

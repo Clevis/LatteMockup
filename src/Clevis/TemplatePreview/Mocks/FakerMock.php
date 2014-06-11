@@ -54,6 +54,13 @@ class FakerMock extends InfiniteMock
 				try
 				{
 					$method = lcFirst(implode('', $stack));
+
+					// method on generator that does not invoke provider
+					if ($method === 'format')
+					{
+						$method = '_format';
+					}
+
 					return $f->$method();
 				}
 				catch (InvalidArgumentException $e)

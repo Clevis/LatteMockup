@@ -39,14 +39,12 @@ class Macros extends MacroSet
 
 	/**
 	 * @param Compiler $compiler
-	 * @param string $layout path
 	 * @return \Clevis\TemplatePreview\Mocks\Macros
 	 */
-	public static function install(Compiler $compiler, $layout)
+	public static function install(Compiler $compiler)
 	{
 		/** @var self $me */
 		$me = new static($compiler);
-		$me->setLayout($layout);
 
 		$me->addMacro('control', function() {});
 		$me->addMacro('href', NULL, NULL, function($node) {

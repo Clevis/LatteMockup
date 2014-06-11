@@ -32,4 +32,14 @@ class MockProvider extends Provider\Base
 		return 'flash-alert';
 	}
 
+	/**
+	 * presumably DateTime->format()
+	 * _ to prevent calling generator->format
+	 * @param null $format
+	 */
+	public function _format($format = NULL)
+	{
+		return $this->generator->dateTime()->format($format);
+	}
+
 }
